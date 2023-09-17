@@ -64,7 +64,7 @@ export const BottomSheetSystem: FC = () => {
     if (!bottomSheetRef.current) {
       return;
     }
-    console.log('LAA');
+
     bottomSheetRef.current?.snapToIndex(0);
   };
 

@@ -35,7 +35,7 @@ export const useSearchSuggest = (
   useEffect(() => {
     onSearchSuggests();
   }, [debouncedQuery]);
-  console.log(query);
+
   const Addresses: FC = () => {
     return suggests.map(suggest => (
       <Zord marginZord={[4, 0, 4]} key={uuid.v4()}>

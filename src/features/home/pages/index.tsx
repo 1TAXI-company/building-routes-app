@@ -16,9 +16,14 @@ export const HomePage = () => {
   const [maneuvers, setManeuvers] = useState<any[]>([]);
   const [lastPoint, setLastPoint] = useState(null);
 
+  const [route, setRoute] = useState();
+
   const { where, from } = useSelector(state => state.common);
 
   const handleFindRoutes = routes => {
+    setRoute(routes.routes[0]);
+
+    console.log(routes);
     const temp = routes.routes[0];
     if (!temp || !temp.jams) {
       return;
@@ -148,6 +153,46 @@ export const HomePage = () => {
       </>
     );
   };
+
+  const onLoadReachedPosition = async () => {
+    try {
+      const response = await mapRef.current?.getReachedPosition(route.id);
+
+      console.log({ response });
+    } catch (e) {
+      console.log({ e });
+    }
+  };
+
+  const onLoadRoutePosition = async () => {
+    try {
+      const response = await mapRef.current?.getRoutePositionInfo(route.id);
+
+      console.log({ response });
+    } catch (e) {
+      console.log({ e });
+    }
+  };
+
+  useEffect(() => {
+    if (!mapRef.current || !route?.id) {
+      return;
+    }
+
+    setInterval(() => {
+      onLoadReachedPosition();
+    }, 1000);
+  }, [route, mapRef]);
+
+  useEffect(() => {
+    if (!mapRef.current || !route?.id) {
+      return;
+    }
+
+    setInterval(() => {
+      onLoadRoutePosition();
+    }, 1000);
+  }, [route, mapRef]);
 
   useEffect(() => {
     setLastPoint(null);
